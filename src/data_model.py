@@ -1,13 +1,17 @@
 """Data models for the camera and user specification."""
+from dataclasses import dataclass
 
-
+@dataclass
 class DatasetSpec:
     """
     Data model for specifications of an image dataset.
     """
-
-    pass
-
+    overlap: float
+    sidelap: float
+    height: float
+    scan_dimension_x: float
+    scan_dimension_y: float
+    exposure_time_ms: float
 
 class Camera:
     """
