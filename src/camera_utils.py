@@ -54,13 +54,16 @@ def compute_image_footprint_on_surface(
     Returns:
         [footprint_x, footprint_y] in meters as a 2-element array.
     """
-    pixel_size_x_m = (distance_from_surface / camera.fx)
-    pixel_size_y_m = (distance_from_surface / camera.fy)
+    pixel_pitch_x_mm = camera.sensor_size_x_mm / camera.image_size_x_px
+    pixel_pitch_y_mm = camera.sensor_size_y_mm / camera.image_size_y_px
 
-    footprint_x = (distance_from_surface / camera.fx) * camera.image_size_x_px
-    footprint_y = (distance_from_surface / camera.fy) * camera.image_size_y_px
+    fx_mm_equiv = camera.fx * pixel_pitch_x_mm
+    fy_mm_equiv = camera.fy * pixel_pitch_y_mm
 
-    return np.array([footprint_x, footprint_y], dtype=np.float32)
+    footprint_x_m = distance_from_surface * (camera.sensor_size_x_mm / fx_mm_equiv)
+    footprint_y_m = distance_from_surface * (camera.sensor_size_y_mm / fy_mm_equiv)
+
+    return np.array([footprint_x_m, footprint_y_m], dtype=np.float32)
 
 
 def compute_ground_sampling_distance(
