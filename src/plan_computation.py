@@ -43,7 +43,13 @@ def compute_speed_during_photo_capture(
     Returns:
         The speed at which the drone should move during photo capture.
     """
-    raise NotImplementedError()
+    distance_from_surface = dataset_spec.height
+    gsd = compute_ground_sampling_distance(camera, distance_from_surface)
+    allowed_movement_m = allowed_movement_px * gsd
+    exposure_time_s = dataset_spec.exposure_time_ms / 1000.0
+    speed = allowed_movement_m / exposure_time_s
+
+    return speed
 
 
 def generate_photo_plan_on_grid(
