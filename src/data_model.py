@@ -64,10 +64,15 @@ class Camera:
     image_size_x_px: int
     image_size_y_px: int
 
-
+@dataclass
 class Waypoint:
     """
     Waypoints are positions where the drone should fly to and capture a photo.
-    """
 
-    pass
+    position : tuple[float, float, float]
+        3D position (x, y, z) in meters.
+    speed : float
+        Desired drone speed (m/s) when reaching this waypoint.
+    """
+    position: tuple[float, float, float]
+    speed: float = 0.0

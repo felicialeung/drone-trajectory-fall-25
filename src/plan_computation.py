@@ -65,4 +65,23 @@ def generate_photo_plan_on_grid(
         Scan plan as a list of waypoints.
 
     """
-    raise NotImplementedError()
+    dx, dy = compute_distance_between_images(camera, dataset_spec)
+    num_x = math.ceil(dataset_spec.scan_dimension_x / dx)
+    num_y = math.ceil(dataset_spec.scan_dimension_y / dy)
+
+    capture_speed = compute_speed_during_photo_capture(camera, dataset_spec)
+
+    waypoints: T.List[Waypoint] = []
+    z = dataset_spec.height
+
+    for j in range(num_y):
+        if j % 2 == 0:
+            x_positions = [i * dx for i in range(num_x)]
+        else:
+            x_positions = [i * dx for i in reversed(range(num_x))]
+        y = j * dy
+
+        for x in x_positions:
+            waypoints.append(Waypoint(position=(x, y, z), speed=capture_speed))
+
+    return waypoints
